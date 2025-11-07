@@ -1,0 +1,2 @@
+This repository contains part of student work from TU Ilmenau. The src directory contains modeling example using Ecore and UML Meta-models which were built with Eclipse Modeling Tool. It gives an development workflow of Model-Driven Engineering with C++. The original system of this framework is taken from the
+MDE4CPP Project, published by Department of Systems and Software Engineering, TU Ilmenau.
