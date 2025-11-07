@@ -1,0 +1,41 @@
+MyClinic
+addStaff  
+John Doe  
+Doctor  
+Cardiology  
+addStaff  
+Jane Smith  
+Nurse  
+Emergency Ward  
+addStaff  
+Heiko Muller  
+Admin  
+Security  
+addSpecializedFacility  
+123 Main Street  
+Orthopedics  
+addGeneralFacility  
+456 Elm Street  
+addAdminFacility  
+789 Oak Avenue  
+HR  
+changeDoctorFacility  
+John Doe  
+Doctor  
+Cardiology  
+789 Pine Street  
+Orthopedics  
+changeNurseFacility  
+Jane Smith  
+Nurse  
+Emergency Ward  
+456 Elm Street  
+coordinateAdmin  
+Heiko Muller  
+Admin  
+HR  
+789 Oak Avenue  
+HR  
+print  
+stop
+help
