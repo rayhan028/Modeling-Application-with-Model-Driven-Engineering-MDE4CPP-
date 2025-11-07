@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:UML4CPPProfile="http://www.tu-ilmenau.de/sse/UML4CPPProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.tu-ilmenau.de/sse/UML4CPPProfile ../../../src/common/UML4CPPProfile/model/UML4CPPProfile.uml#_v75nIfp7EeuavpF89IQaUg">
+  <uml:Model xmi:id="_FncLcN8hEe-AEN9jxhy8Pg" name="ClinicModel">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_FqwlMN8hEe-AEN9jxhy8Pg">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ftEQgN8hEe-AEN9jxhy8Pg" name="Clinic">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_BeZnkN8jEe-AEN9jxhy8Pg" name="clinicName">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_B0KcMN8jEe-AEN9jxhy8Pg" name="address">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_ZUIRId8kEe-AEN9jxhy8Pg" name="generalfacilities" type="_h3wmcN8hEe-AEN9jxhy8Pg" aggregation="composite" association="_ZUGb8N8kEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fJkagN8kEe-AEN9jxhy8Pg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fJ2HUN8kEe-AEN9jxhy8Pg" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_o2ektd8kEe-AEN9jxhy8Pg" name="staffs" type="_gTLOQN8hEe-AEN9jxhy8Pg" aggregation="composite" association="_o2dWkN8kEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_u6TIUN8kEe-AEN9jxhy8Pg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_u6mqUN8kEe-AEN9jxhy8Pg" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_hHqEwN9ZEe-AEN9jxhy8Pg" name="employAdmins" type="_Zuzn4N9ZEe-AEN9jxhy8Pg" aggregation="composite" association="_hHmaYN9ZEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lsrIEN9ZEe-AEN9jxhy8Pg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ls6_sN9ZEe-AEN9jxhy8Pg" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_jfmKQPOWEe-KD90n1g5WrQ" name="specialfacilities" type="_gBx8QN8hEe-AEN9jxhy8Pg" aggregation="composite" association="_je7b4POWEe-KD90n1g5WrQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sZe8EPOWEe-KD90n1g5WrQ"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sZx3APOWEe-KD90n1g5WrQ" value="*"/>
+      </ownedAttribute>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_7AS3gN8pEe-AEN9jxhy8Pg" name="changeDoctorFacility" specification="_WWfpEN8pEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/SpecializedFacility.hpp&quot;&#xD;
+#include &quot;ClinicModel/Staff.hpp&quot;</body>
+        <body>//changes the workplace facility of a doctor&#xD;
+std::shared_ptr&lt;Bag&lt;SpecializedFacility>> sfacility = this -> getSpecialfacilities();&#xD;
+std::shared_ptr&lt;Bag&lt;Staff>> sTaff = this-> getStaffs();&#xD;
+&#xD;
+//find the correct facility for the given address&#xD;
+//therefore, we iterate through all specialized facilities of the clinic&#xD;
+&#xD;
+for(Bag&lt;SpecializedFacility>::const_iterator it= sfacility->begin();it!= sfacility->end();it++)&#xD;
+{&#xD;
+	//removing a doctor from  from a specialized facilities (his previous workplace)&#xD;
+	//check whether there is a doctor with the same name as the input&#xD;
+	//(by iterating through all doctors and comparing their names)&#xD;
+&#xD;
+	std::shared_ptr&lt;Bag&lt;Staff>> doctors = (*it) -> getDoctors();&#xD;
+&#xD;
+	for(Bag&lt;Staff>::const_iterator staffs_it=doctors -> begin(); staffs_it!=doctors-> end(); staffs_it++)&#xD;
+	{&#xD;
+		//if there is a doctor with the same name, he is removed from the specialized facility&#xD;
+		//(his previous workplace)&#xD;
+&#xD;
+		if ((*staffs_it)-> getName() == staff -> getName() &amp;&amp; (*staffs_it) -> getRole() == staff -> getRole()) &#xD;
+		{&#xD;
+			//removing the doctor from the doctors list from the facility&#xD;
+			(*it) -> excludeDoctor(staff);&#xD;
+			std::cout &lt;&lt; &quot;Removed employee &quot; &lt;&lt; staff -> getName() &lt;&lt; &quot; from &quot; &lt;&lt; (*it) -> getAddress() &lt;&lt; std::endl;&#xD;
+			break;&#xD;
+		}&#xD;
+	}&#xD;
+	//adding a doctor as new doctor to a facility (his new workplace)&#xD;
+	//only if a specialized facility with the same address as the given address exists&#xD;
+&#xD;
+	if ((*it) -> getAddress() == specialFaciltylocation) &#xD;
+	{&#xD;
+		//adds the doctor to the list of doctors of the facility	&#xD;
+		(*it) -> includeDoctor(staff);&#xD;
+		 std::cout &lt;&lt; &quot;Added &quot; &lt;&lt;staff -> getRole()&lt;&lt;&quot; &quot;&lt;&lt; staff -> getName() &lt;&lt; &quot; to &quot; &lt;&lt; (*it) -> getAddress() &lt;&lt; std::endl;&#xD;
+	}&#xD;
+}</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_UfvtYN8qEe-AEN9jxhy8Pg" name="changeNurseFacility" specification="_dcFLsN8pEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/GeneralFacility.hpp&quot;&#xD;
+#include &quot;ClinicModel/Staff.hpp&quot;</body>
+        <body>std::shared_ptr&lt;Bag&lt;GeneralFacility>> gfacility = this -> getGeneralfacilities();&#xD;
+std::shared_ptr&lt;Bag&lt;Staff>> sTaff = this-> getStaffs();&#xD;
+&#xD;
+for(Bag&lt;GeneralFacility>::const_iterator it=gfacility -> begin(); it!=gfacility -> end(); it++)&#xD;
+{	&#xD;
+	std::shared_ptr&lt;Bag&lt; Staff > > nurses = (*it) -> getNurses();&#xD;
+	&#xD;
+	for(Bag&lt;Staff>::const_iterator staffs_it=nurses -> begin(); staffs_it!=nurses -> end(); staffs_it++)&#xD;
+	{&#xD;
+		&#xD;
+		if ((*staffs_it) -> getName() == staff -> getName() &amp;&amp; (*staffs_it) -> getRole() == staff -> getRole()) &#xD;
+		{		&#xD;
+			(*it) -> releaseNurse(staff);&#xD;
+			std::cout &lt;&lt; &quot;Removed Nurse &quot; &lt;&lt; staff -> getName() &lt;&lt; &quot; from &quot; &lt;&lt; (*it) -> getAddress() &lt;&lt; std::endl;&#xD;
+			break;&#xD;
+		}&#xD;
+	}&#xD;
+&#xD;
+	if ((*it) -> getAddress() == generalFaciltylocation) &#xD;
+	{&#xD;
+		//adds the person to the list of residents of the building&#xD;
+		(*it) -> assignNurse(staff);&#xD;
+		std::cout &lt;&lt; &quot;Added nurse &quot; &lt;&lt; staff -> getName() &lt;&lt; &quot; to &quot; &lt;&lt;(*it) -> getAddress() &lt;&lt; std::endl;&#xD;
+	}&#xD;
+}</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_nFnDAN8vEe-AEN9jxhy8Pg" name="printClinicDetails" specification="_hClJkN8vEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/Facility.hpp&quot;&#xD;
+#include &quot;ClinicModel/Staff.hpp&quot;</body>
+        <body>std::shared_ptr&lt; Bag&lt;SpecializedFacility> > specializedFacilities = this ->getSpecialfacilities();&#xD;
+std::shared_ptr&lt; Bag&lt;GeneralFacility> > generalFacilities = this -> getGeneralfacilities();&#xD;
+std::shared_ptr&lt; Bag&lt;AdministrationFacility> > adminFacilities = this -> getEmployAdmins();&#xD;
+std::shared_ptr&lt; Bag&lt;Staff> > staffs = this -> getStaffs();&#xD;
+&#xD;
+std::cout &lt;&lt; &quot;========================================&quot; &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;Clinic&quot; &lt;&lt; this -> getClinicName() &lt;&lt; &quot; contains: &quot; &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;========================================&quot; &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;SpecializedFacilities:&quot; &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;&#xD;
+&#xD;
+for(Bag&lt;SpecializedFacility>::const_iterator it=specializedFacilities -> begin(); it!=specializedFacilities -> end(); it++)&#xD;
+{&#xD;
+	std::cout &lt;&lt; &quot;\tSpecial facilities with address \&quot;&quot; &lt;&lt; (*it) -> getAddress() &lt;&lt; &quot;\&quot; and specialization \&quot;&quot; &lt;&lt; (*it) -> getSpecialization() &lt;&lt; &quot;\&quot;&quot; &lt;&lt; std::endl;&#xD;
+	std::cout &lt;&lt; &quot;\t\tDoctors:&quot; &lt;&lt; std::endl;&#xD;
+	&#xD;
+	//list of doctors in the current special facility&#xD;
+	&#xD;
+	std::shared_ptr&lt; Bag&lt;Staff> > staffs = (*it) -> getDoctors();&#xD;
+	&#xD;
+	&#xD;
+	for(Bag&lt;Staff>::const_iterator itStaff = staffs -> begin(); itStaff!= staffs -> end(); itStaff++)&#xD;
+	{&#xD;
+		std::cout &lt;&lt; &quot;\t\t\tDoctor &quot; &lt;&lt; (*itStaff) -> getName() &lt;&lt; (*itStaff) -> getRole()&lt;&lt; std::endl;&#xD;
+	}&#xD;
+}&#xD;
+&#xD;
+std::cout &lt;&lt; &quot;General Facilities:&quot; &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;&#xD;
+&#xD;
+for(Bag&lt;GeneralFacility>::const_iterator it=generalFacilities -> begin(); it!=generalFacilities -> end(); it++)&#xD;
+{&#xD;
+	std::cout &lt;&lt; &quot;\tGeneral Facilities with address \&quot;&quot; &lt;&lt; (*it) -> getAddress() &lt;&lt; &quot;\&quot;&quot; &lt;&lt; std::endl;&#xD;
+	std::cout &lt;&lt; &quot;\t\tNurses:&quot; &lt;&lt; std::endl;&#xD;
+	&#xD;
+	std::shared_ptr&lt; Bag&lt;Staff> > staffs = (*it) -> getNurses();&#xD;
+	&#xD;
+	&#xD;
+	for(Bag&lt;Staff>::const_iterator itStaff=staffs -> begin(); itStaff!=staffs -> end(); itStaff++)&#xD;
+	{&#xD;
+		std::cout &lt;&lt; &quot;\t\t\tNurse &quot; &lt;&lt; (*itStaff) -> getName() &lt;&lt; (*itStaff) -> getRole ()&lt;&lt;std::endl;&#xD;
+	}&#xD;
+}&#xD;
+&#xD;
+std::cout &lt;&lt; &quot;Administration Facilities:&quot; &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;&#xD;
+for(Bag&lt;AdministrationFacility>::const_iterator it=adminFacilities -> begin(); it!=adminFacilities -> end(); it++)&#xD;
+{&#xD;
+	std::cout &lt;&lt; &quot;\tAdministration Facilities with address \&quot;&quot; &lt;&lt; (*it) -> getAddress() &lt;&lt; &quot;\&quot;&quot; &lt;&lt; std::endl;&#xD;
+	std::cout &lt;&lt; &quot;\t\tAdmins:&quot; &lt;&lt; std::endl;&#xD;
+	&#xD;
+	std::shared_ptr&lt; Bag&lt;Staff> > staffs = (*it) -> getAdmins();&#xD;
+	&#xD;
+	&#xD;
+	for(Bag&lt;Staff>::const_iterator itStaff=staffs -> begin(); itStaff!=staffs -> end(); itStaff++)&#xD;
+	{&#xD;
+		std::cout &lt;&lt; &quot;\t\t\tAdmin &quot; &lt;&lt; (*itStaff) -> getName() &lt;&lt; (*itStaff) -> getRole ()&lt;&lt;std::endl;&#xD;
+	}&#xD;
+}&#xD;
+&#xD;
+&#xD;
+std::cout &lt;&lt; &quot;Staffs in Clinic:&quot; &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;&#xD;
+&#xD;
+&#xD;
+for(Bag&lt;Staff>::const_iterator it=staffs -> begin(); it!=staffs -> end(); it++)&#xD;
+{	&#xD;
+	std::cout &lt;&lt; &quot;\tStaff with name and Role: &quot; &lt;&lt; (*it) -> getName() &lt;&lt;&quot; &quot;&lt;&lt;(*it) -> getRole()&lt;&lt; std::endl;&#xD;
+}&#xD;
+std::cout &lt;&lt; &quot;========================================&quot;&lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;Printed everything from Clinic&quot; &lt;&lt; this -> getClinicName() &lt;&lt; std::endl;&#xD;
+std::cout &lt;&lt; &quot;========================================&quot;&lt;&lt; std::endl;</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_CfjgwN9eEe-AEN9jxhy8Pg" name="coordinateAdmin" specification="_sspOEN9dEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/AdministrationFacility.hpp&quot;&#xD;
+#include &quot;ClinicModel/Staff.hpp&quot;</body>
+        <body>//std::shared_ptr&lt;Bag&lt;GeneralFacility>> gfacility = this -> getGeneralfacilities();&#xD;
+std::shared_ptr&lt;Bag&lt;AdministrationFacility>> adfacility = this -> getEmployAdmins();&#xD;
+&#xD;
+std::shared_ptr&lt;Bag&lt;Staff>> sTaff = this-> getStaffs();&#xD;
+&#xD;
+&#xD;
+for(Bag&lt;AdministrationFacility>::const_iterator it=adfacility -> begin(); it!=adfacility -> end(); it++)&#xD;
+{	&#xD;
+	std::shared_ptr&lt;Bag&lt; Staff > > admins = (*it) -> getAdmins();&#xD;
+	&#xD;
+	for(Bag&lt;Staff>::const_iterator staffs_it=admins -> begin(); staffs_it!=admins -> end(); staffs_it++)&#xD;
+	{&#xD;
+		&#xD;
+		if ((*staffs_it) -> getName() == staff -> getName() &amp;&amp; (*staffs_it) -> getRole() == staff -> getRole() ) &#xD;
+		{		&#xD;
+			(*it) -> removeAdmin(staff);&#xD;
+			std::cout &lt;&lt; &quot;Removed Admin&quot; &lt;&lt; staff -> getName() &lt;&lt; &quot; from &quot; &lt;&lt; (*it) -> getAddress() &lt;&lt; std::endl;&#xD;
+			break;&#xD;
+		}&#xD;
+	}&#xD;
+&#xD;
+	if ((*it) -> getAddress() == adminFacilitylocation) &#xD;
+	{&#xD;
+		//adds the person to the list of residents of the building&#xD;
+		(*it) -> removeAdmin(staff);&#xD;
+		std::cout &lt;&lt; &quot;Added admin &quot; &lt;&lt; staff -> getName() &lt;&lt; &quot; to &quot; &lt;&lt;(*it) -> getAddress() &lt;&lt; std::endl;&#xD;
+	}&#xD;
+}</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_WWfpEN8pEe-AEN9jxhy8Pg" name="changeDoctorFacility" method="_7AS3gN8pEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_thWmIN8pEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_x6wPUN8pEe-AEN9jxhy8Pg" name="specialFaciltylocation">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_87sdIN89Ee-AEN9jxhy8Pg" name="specializationType">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_dcFLsN8pEe-AEN9jxhy8Pg" name="changeNurseFacility" method="_UfvtYN8qEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_1COWkN8pEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_3gESAN8pEe-AEN9jxhy8Pg" name="generalFaciltylocation">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_hClJkN8vEe-AEN9jxhy8Pg" name="printClinicDetails" method="_nFnDAN8vEe-AEN9jxhy8Pg"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_sspOEN9dEe-AEN9jxhy8Pg" name="coordinateAdmin" method="_CfjgwN9eEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_0M9k4N9dEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_2bLI4N9dEe-AEN9jxhy8Pg" name="adminDepartment">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_-7hZUN9dEe-AEN9jxhy8Pg" name="adminFacilitylocation">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_gBx8QN8hEe-AEN9jxhy8Pg" name="SpecializedFacility" visibility="public">
+      <generalization xmi:type="uml:Generalization" xmi:id="_5_8cgN8jEe-AEN9jxhy8Pg" general="_glPOoN8hEe-AEN9jxhy8Pg"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_T3oosN8jEe-AEN9jxhy8Pg" name="specialization">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_Za4j8t8lEe-AEN9jxhy8Pg" name="doctors" type="_gTLOQN8hEe-AEN9jxhy8Pg" aggregation="composite" association="_Za384N8lEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Za5LAN8lEe-AEN9jxhy8Pg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Za5LAd8lEe-AEN9jxhy8Pg" value="*"/>
+      </ownedAttribute>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_Bv4xcN8pEe-AEN9jxhy8Pg" name="includeDoctor" specification="_9w3CAN8mEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/Staff.hpp&quot;&#xD;
+</body>
+        <body>m_doctors-> add(staff);</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_FVZfkN8pEe-AEN9jxhy8Pg" name="excludeDoctor" specification="_-FKeEN8mEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/Staff.hpp&quot;&#xD;
+</body>
+        <body>m_doctors->erase(staff);</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_9w3CAN8mEe-AEN9jxhy8Pg" name="includeDoctor" method="_Bv4xcN8pEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ue8jgN8nEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_-FKeEN8mEe-AEN9jxhy8Pg" name="excludeDoctor" method="_FVZfkN8pEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_YSzPoN8nEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_gTLOQN8hEe-AEN9jxhy8Pg" name="Staff">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_GtN10N8jEe-AEN9jxhy8Pg" name="name">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_e_xd8N8nEe-AEN9jxhy8Pg" name="role">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_PBs44N9BEe-AEN9jxhy8Pg" name="ward">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_PZP2MN9BEe-AEN9jxhy8Pg" name="specialty">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_x8EbgN-5Ee-ckqiI1UrD3w" name="department">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_glPOoN8hEe-AEN9jxhy8Pg" name="Facility" isAbstract="true">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_M4GqwN8jEe-AEN9jxhy8Pg" name="address">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_h3wmcN8hEe-AEN9jxhy8Pg" name="GeneralFacility">
+      <generalization xmi:type="uml:Generalization" xmi:id="_48s20N8jEe-AEN9jxhy8Pg" general="_glPOoN8hEe-AEN9jxhy8Pg"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_FUy_cd8lEe-AEN9jxhy8Pg" name="nurses" type="_gTLOQN8hEe-AEN9jxhy8Pg" aggregation="composite" association="_FUyYYN8lEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FUy_ct8lEe-AEN9jxhy8Pg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FUy_c98lEe-AEN9jxhy8Pg" value="*"/>
+      </ownedAttribute>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_4hrK4N8nEe-AEN9jxhy8Pg" name="assignNurse" specification="_Mv83gN8nEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/Staff.hpp&quot;&#xD;
+</body>
+        <body>m_nurses-> add(staff);</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_73l90N8nEe-AEN9jxhy8Pg" name="releaseNurse" specification="_NIIuAN8nEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/Staff.hpp&quot;&#xD;
+</body>
+        <body>m_nurses-> erase(staff);</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Mv83gN8nEe-AEN9jxhy8Pg" name="assignNurse" method="_4hrK4N8nEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ze52YN8nEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_NIIuAN8nEe-AEN9jxhy8Pg" name="releaseNurse" method="_73l90N8nEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_tgShEN8nEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Zuzn4N9ZEe-AEN9jxhy8Pg" name="AdministrationFacility">
+      <generalization xmi:type="uml:Generalization" xmi:id="_zUnvAN9aEe-AEN9jxhy8Pg" general="_glPOoN8hEe-AEN9jxhy8Pg"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_sdGBEN9bEe-AEN9jxhy8Pg" name="adminDept">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_fS_h0t9cEe-AEN9jxhy8Pg" name="admins" type="_gTLOQN8hEe-AEN9jxhy8Pg" aggregation="composite" association="_fS-TsN9cEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fS_h099cEe-AEN9jxhy8Pg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fS_h1N9cEe-AEN9jxhy8Pg" value="*"/>
+      </ownedAttribute>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_L_8j0N9cEe-AEN9jxhy8Pg" name="createAdmin" specification="_2OLgoN9bEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/Staff.hpp&quot;&#xD;
+</body>
+        <body>m_admins->add(staff);</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_Qli18N9cEe-AEN9jxhy8Pg" name="removeAdmin" specification="_2gsM8N9bEe-AEN9jxhy8Pg">
+        <language>INCLUDE</language>
+        <language>CPP</language>
+        <body>#include &quot;ClinicModel/Staff.hpp&quot;&#xD;
+</body>
+        <body>m_admins->erase(staff);</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_2OLgoN9bEe-AEN9jxhy8Pg" name="createAdmin" method="_L_8j0N9cEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_9elMIN9bEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_2gsM8N9bEe-AEN9jxhy8Pg" name="removeAdmin" method="_Qli18N9cEe-AEN9jxhy8Pg">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_A23WkN9cEe-AEN9jxhy8Pg" name="staff" type="_gTLOQN8hEe-AEN9jxhy8Pg"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_ZUGb8N8kEe-AEN9jxhy8Pg" memberEnd="_ZUHqEt8kEe-AEN9jxhy8Pg _ZUIRId8kEe-AEN9jxhy8Pg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZUHqEN8kEe-AEN9jxhy8Pg" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_ZUHqEd8kEe-AEN9jxhy8Pg" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_ZUHqEt8kEe-AEN9jxhy8Pg" name="clinics" type="_ftEQgN8hEe-AEN9jxhy8Pg" association="_ZUGb8N8kEe-AEN9jxhy8Pg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_o2dWkN8kEe-AEN9jxhy8Pg" memberEnd="_o2ekst8kEe-AEN9jxhy8Pg _o2ektd8kEe-AEN9jxhy8Pg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_o2eksN8kEe-AEN9jxhy8Pg" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_o2eksd8kEe-AEN9jxhy8Pg" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_o2ekst8kEe-AEN9jxhy8Pg" name="clinics" type="_ftEQgN8hEe-AEN9jxhy8Pg" association="_o2dWkN8kEe-AEN9jxhy8Pg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_FUyYYN8lEe-AEN9jxhy8Pg" memberEnd="_FUy_cd8lEe-AEN9jxhy8Pg _FUy_dN8lEe-AEN9jxhy8Pg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_FUyYYd8lEe-AEN9jxhy8Pg" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_FUy_cN8lEe-AEN9jxhy8Pg" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_FUy_dN8lEe-AEN9jxhy8Pg" name="hasShift" type="_h3wmcN8hEe-AEN9jxhy8Pg" association="_FUyYYN8lEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QbqmMN8lEe-AEN9jxhy8Pg"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Za384N8lEe-AEN9jxhy8Pg" memberEnd="_Za4j8t8lEe-AEN9jxhy8Pg _Za5LAt8lEe-AEN9jxhy8Pg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Za4j8N8lEe-AEN9jxhy8Pg" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Za4j8d8lEe-AEN9jxhy8Pg" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_Za5LAt8lEe-AEN9jxhy8Pg" name="getAssigned" type="_gBx8QN8hEe-AEN9jxhy8Pg" association="_Za384N8lEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kTUGEN8lEe-AEN9jxhy8Pg"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:FunctionBehavior" xmi:id="_jizUgN84Ee-AEN9jxhy8Pg" name="mainProgram">
+      <language>INCLUDE</language>
+      <language>CPP</language>
+      <body>#include &quot;ClinicModel/Facility.hpp&quot;&#xD;
+#include &quot;ClinicModel/Staff.hpp&quot;&#xD;
+#include &quot;ClinicModel/GeneralFacility.hpp&quot;&#xD;
+#include &quot;ClinicModel/SpecializedFacility.hpp&quot;&#xD;
+#include &quot;ClinicModel/Clinic.hpp&quot;&#xD;
+#include &quot;ClinicModel/AdministrationFacility.hpp&quot;&#xD;
+#include &lt;chrono>&#xD;
+#include &lt;iostream>&#xD;
+
+#include &lt;string>&#xD;
+#include &lt;fstream>&#xD;
+&#xD;
+bool isFileEmpty(const std::string&amp; filename)&#xD;
+
+{
+    &#xD;
+	std::ifstream file(filename);
+    &#xD;
+	return file.peek() == std::ifstream::traits_type::eof();
+&#xD;
+}</body>
+      <body>int Num_Elements = 0;&#xD;
+int runNumber = 0;&#xD;
+// Reading Num_Elements and runNumber &#xD;
+std::ifstream configFile(&quot;C:/MDE4CPP/MDE4CPP/application/bin/umlinput.txt&quot;);&#xD;
+if (!configFile.is_open())&#xD;
+{&#xD;
+    std::cerr &lt;&lt; &quot;Error opening config.txt&quot; &lt;&lt; std::endl;&#xD;
+    return 1;&#xD;
+}&#xD;
+configFile >> Num_Elements >> runNumber;&#xD;
+configFile.close();&#xD;
+if (Num_Elements &lt;= 0 || runNumber &lt;= 0) &#xD;
+{&#xD;
+     std::cerr &lt;&lt; &quot;Invalid values&quot; &lt;&lt; std::endl;&#xD;
+     return 1;&#xD;
+}&#xD;
+&#xD;
+std::ofstream csvFile(&quot;C:/MDE4CPP/MDE4CPP/application/runtimeUML/ClinicModel_times.csv&quot;, std::ios::app);&#xD;
+if (!csvFile) &#xD;
+{&#xD;
+    std::cerr &lt;&lt; &quot;Error opening ClinicModel_times.csv&quot; &lt;&lt; std::endl;&#xD;
+    return 1;&#xD;
+}&#xD;
+if (isFileEmpty(&quot;C:/MDE4CPP/MDE4CPP/application/runtimeUML/ClinicModel_times.csv&quot;)) &#xD;
+{&#xD;
+        csvFile &lt;&lt; &quot;RUN,Num_Elements,Time1,Time2,Time3,Time4,Time5,Time6,Time7, DeletionTime\n&quot;;&#xD;
+}&#xD;
+&#xD;
+long time1, time2, time3, time4, time5, time6, time7, deletionTime;&#xD;
+std::chrono::time_point&lt;std::chrono::high_resolution_clock>start,end,startTimedeletion,endDeletion,finalend;&#xD;
+&#xD;
+int iterationNum=10;&#xD;
+{		//Create Model Factory and Package&#xD;
+	std::shared_ptr&lt;ClinicModelFactory> factory = ClinicModelFactory::eInstance();&#xD;
+	std::shared_ptr&lt;ClinicModelPackage> package = ClinicModelPackage::eInstance();&#xD;
+	&#xD;
+	for(int j=0;j&lt;iterationNum;j++)&#xD;
+	{	&#xD;
+		{&#xD;
+			std::shared_ptr&lt;Clinic> clinic = factory->createClinic();&#xD;
+			std::string clinicName = &quot;Sample Clinic&quot;; // Example clinic &#xD;
+			clinic->setClinicName(clinicName);&#xD;
+			&#xD;
+			const int numStaffTypes = 6; // Number of staff types&#xD;
+			// Staff types and their respective attributes&#xD;
+			std::string staffRoles[numStaffTypes] = {&quot;Doctor&quot;, &quot;Nurse&quot;, &quot;Admin&quot;, &quot;Doctor&quot;, &quot;Nurse&quot;, &quot;Admin&quot;};&#xD;
+			std::string doctorSpecialties[numStaffTypes] = {&quot;Cardiology&quot;, &quot;&quot;, &quot;&quot;, &quot;Neurology&quot;, &quot;&quot;, &quot;&quot;}; // Specialties for doctors&#xD;
+			std::string nurseWards[numStaffTypes] = {&quot;&quot;, &quot;ICU&quot;, &quot;&quot;, &quot;&quot;, &quot;Pediatrics&quot;, &quot;&quot;}; // Wards for nurses&#xD;
+			std::string adminDepartments[numStaffTypes] = {&quot;&quot;, &quot;&quot;, &quot;HR&quot;, &quot;&quot;, &quot;&quot;, &quot;Finance&quot;}; // Departments for admins&#xD;
+			&#xD;
+			// Adding staff to the clinic- first operation&#xD;
+			start = std::chrono::high_resolution_clock::now();						&#xD;
+			for (int i = 0; i &lt; Num_Elements; i++) &#xD;
+			{&#xD;
+				// Generating staff name and role dynamically&#xD;
+				std::string staffName = &quot;Staff_&quot; + std::to_string(i + 1);&#xD;
+				std::string staffRole = staffRoles[i % numStaffTypes];  // Cycle through roles&#xD;
+&#xD;
+				// Creating Staff				&#xD;
+				std::shared_ptr&lt;Staff> staff = factory->createStaff_as_staffs_in_Clinic(clinic);&#xD;
+				staff->setName(staffName);&#xD;
+				staff->setRole(staffRole);&#xD;
+				&#xD;
+				// Set additional properties based on role&#xD;
+				if(staffRole==&quot;Doctor&quot;)&#xD;
+				{&#xD;
+					staff->setSpecialty(doctorSpecialties[i % numStaffTypes]);&#xD;
+				} &#xD;
+				else if (staffRole == &quot;Nurse&quot;) &#xD;
+				{&#xD;
+						staff->setWard(nurseWards[i % numStaffTypes]);&#xD;
+				} &#xD;
+				else if (staffRole == &quot;Admin&quot;) &#xD;
+				{&#xD;
+						staff->setDepartment(adminDepartments[i % numStaffTypes]);&#xD;
+				}&#xD;
+			}&#xD;
+			end = std::chrono::high_resolution_clock::now();&#xD;
+			time1=std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count();&#xD;
+			//std::cout &lt;&lt; &quot;Time taken to add all staff: &quot; &lt;&lt; std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count() &lt;&lt; &quot;ms&quot; &lt;&lt; std::endl;&#xD;
+					&#xD;
+			const int numSpecializedFacilities = 5;&#xD;
+			std::string specializedFacilityAddresses[numSpecializedFacilities] = {&quot;SpecFacility Address 1&quot;, &quot;SpecFacility Address 2&quot;, &quot;SpecFacility Address 3&quot;, &quot;SpecFacility Address 4&quot;, &quot;SpecFacility Address 5&quot;};&#xD;
+			std::string specializedFacilitySpecializations[numSpecializedFacilities] = {&quot;Cardiology&quot;, &quot;Neurology&quot;, &quot;Oncology&quot;, &quot;Pediatrics&quot;, &quot;Radiology&quot;};&#xD;
+&#xD;
+			const int numGeneralFacilities = 5;&#xD;
+			std::string generalFacilityAddresses[numGeneralFacilities] = {&quot;GenFacility Address 1&quot;, &quot;GenFacility Address 2&quot;, &quot;GenFacility Address 3&quot;, &quot;GenFacility Address 4&quot;, &quot;GenFacility Address 5&quot;};&#xD;
+&#xD;
+			const int numAdminFacilities = 5;&#xD;
+			std::string adminFacilityAddresses[numAdminFacilities] = {&quot;AdminFacility Address 1&quot;, &quot;AdminFacility Address 2&quot;, &quot;AdminFacility Address 3&quot;, &quot;AdminFacility Address 4&quot;, &quot;AdminFacility Address 5&quot;};&#xD;
+			std::string adminFacilityDepartments[numAdminFacilities] = {&quot;HR&quot;, &quot;Finance&quot;, &quot;IT&quot;, &quot;Marketing&quot;, &quot;Admissions&quot;};&#xD;
+&#xD;
+			// Start of dynamic facility addition&#xD;
+			// Add Specialized Facilities - 2nd operation&#xD;
+			start = std::chrono::high_resolution_clock::now();&#xD;
+			for (int i = 0; i &lt; Num_Elements; i++) &#xD;
+			{	&#xD;
+				std::shared_ptr&lt;SpecializedFacility> sfacility = factory->createSpecializedFacility_as_specialfacilities_in_Clinic(clinic);&#xD;
+				sfacility->setAddress(specializedFacilityAddresses[i % numSpecializedFacilities]);&#xD;
+				sfacility->setSpecialization(specializedFacilitySpecializations[i % numSpecializedFacilities]);&#xD;
+						&#xD;
+			}&#xD;
+			end = std::chrono::high_resolution_clock::now();&#xD;
+			time2= std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count();&#xD;
+				//std::cout &lt;&lt; &quot;Time taken to add all specialized facilities: &quot; &lt;&lt; std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count() &lt;&lt; &quot;ms&quot; &lt;&lt; std::endl;&#xD;
+&#xD;
+				// Add General Facilities- 3rd operation&#xD;
+			start = std::chrono::high_resolution_clock::now();&#xD;
+			for (int i = 0; i &lt; Num_Elements; i++) &#xD;
+			{&#xD;
+				std::shared_ptr&lt;GeneralFacility> gfacility = factory->createGeneralFacility_as_generalfacilities_in_Clinic(clinic);&#xD;
+				gfacility->setAddress(generalFacilityAddresses[i % numGeneralFacilities]);&#xD;
+			}&#xD;
+			end = std::chrono::high_resolution_clock::now();&#xD;
+			time3=std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count();&#xD;
+				&#xD;
+				//std::cout &lt;&lt; &quot;Time taken to add all generalfacility: &quot; &lt;&lt; std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count() &lt;&lt; &quot;ms&quot; &lt;&lt; std::endl;&#xD;
+					&#xD;
+				// Add Admin Facilities- 4th operation&#xD;
+			start = std::chrono::high_resolution_clock::now();&#xD;
+			for (int i = 0; i &lt; Num_Elements; i++) &#xD;
+			{&#xD;
+				std::shared_ptr&lt;AdministrationFacility> adfacility = factory->createAdministrationFacility_as_employAdmins_in_Clinic(clinic);&#xD;
+				adfacility->setAddress(adminFacilityAddresses[i % numAdminFacilities]);&#xD;
+				adfacility->setAdminDept(adminFacilityDepartments[i % numAdminFacilities]);	&#xD;
+			}&#xD;
+			end = std::chrono::high_resolution_clock::now();&#xD;
+			time4= std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count();&#xD;
+				&#xD;
+				// changing nurse facility - 5th operation&#xD;
+			const int Num_Nurses = Num_Elements; &#xD;
+			std::string nurseRolesNew=&quot;Nurse&quot;;&#xD;
+				// Change nurse facilities&#xD;
+			start = std::chrono::high_resolution_clock::now();&#xD;
+			for (int i = 0; i &lt; Num_Nurses; i++) &#xD;
+			{	&#xD;
+				std::shared_ptr&lt;Staff> nurse = nullptr;&#xD;
+				std::shared_ptr&lt;Bag&lt;Staff>> staffs = clinic->getStaffs();&#xD;
+				std::string nurseNamesNew = &quot;Nurse_&quot; + std::to_string(i + 1);&#xD;
+				std::string nurseNewWardsNew= (i % 3 == 0) ? &quot;ICU&quot; : (i % 3 == 1) ? &quot;Pediatrics&quot; : &quot;Emergency&quot;;&#xD;
+				std::string newNurseAddressesNew= &quot;New Address &quot; + std::to_string(i + 1);&#xD;
+					&#xD;
+				// Find the nurse by name, role, and ward&#xD;
+				Bag&lt;Staff>::const_iterator endit=staffs->end();&#xD;
+				for (Bag&lt;Staff>::const_iterator it = staffs->begin(); it != endit; it++) &#xD;
+				{&#xD;
+					std::string itName = (*it)->getName();&#xD;
+					std::string itRole = (*it)->getRole();&#xD;
+					std::string itWard = (*it)->getWard();&#xD;
+											&#xD;
+					if (itName == nurseNamesNew  &amp;&amp; itRole == nurseRolesNew &amp;&amp; itWard == nurseNewWardsNew) &#xD;
+					{&#xD;
+						nurse = (*it);&#xD;
+						break; // Exit loop once the nurse is found&#xD;
+					}&#xD;
+				}&#xD;
+&#xD;
+				if (nurse != nullptr) &#xD;
+				{&#xD;
+						clinic->changeNurseFacility(nurse, newNurseAddressesNew);&#xD;
+						// std::cout &lt;&lt; &quot;Nurse &quot; &lt;&lt; nurseNames[i] &lt;&lt; &quot; assigned to new facility: &quot; &lt;&lt; newNurseAddresses[i] &lt;&lt; std::endl;&#xD;
+				} &#xD;
+			}&#xD;
+			end = std::chrono::high_resolution_clock::now();&#xD;
+			time5=std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count();&#xD;
+				&#xD;
+			//changing doctor facilities- 6th operation&#xD;
+			const int numDoctors = Num_Elements;&#xD;
+			std::string doctorRolesNew=&quot;Doctor&quot;;&#xD;
+			// Change doctor facilities&#xD;
+			start = std::chrono::high_resolution_clock::now();&#xD;
+			for (int i = 0; i &lt; numDoctors; i++) &#xD;
+			{	&#xD;
+				std::shared_ptr&lt;Staff> doctor = nullptr;&#xD;
+				std::shared_ptr&lt;Bag&lt;Staff>> staffs = clinic->getStaffs();&#xD;
+				std::string doctorNamesNew = &quot;Doctor_&quot; + std::to_string(i + 1);&#xD;
+				std::string doctorSpecializationsNew = (i % 2 == 0) ? &quot;Cardiology&quot; : &quot;Neurology&quot;;&#xD;
+				std::string newDoctorAddressesNew = &quot;New Doctor Address &quot; + std::to_string(i + 1);&#xD;
+&#xD;
+				// Find a doctor by name, role, and specialty&#xD;
+				Bag&lt;Staff>::const_iterator endit=staffs->end();&#xD;
+				for (Bag&lt;Staff>::const_iterator it = staffs->begin(); it != endit; it++) &#xD;
+				{&#xD;
+					std::string itName = (*it)->getName();&#xD;
+					std::string itRole = (*it)->getRole();&#xD;
+					std::string itSpecialization = (*it)->getSpecialty();&#xD;
+&#xD;
+					// Match by name, role, and specialty&#xD;
+					if (itName == doctorNamesNew &amp;&amp; itRole == doctorRolesNew &amp;&amp; itSpecialization == newDoctorAddressesNew) &#xD;
+					{&#xD;
+						doctor = (*it);&#xD;
+						break; &#xD;
+					}&#xD;
+				}&#xD;
+				if (doctor != nullptr) &#xD;
+				{&#xD;
+						// Change the facility for the found doctor&#xD;
+					clinic->changeDoctorFacility(doctor, newDoctorAddressesNew, doctor->getSpecialty());&#xD;
+				} &#xD;
+			}&#xD;
+			end = std::chrono::high_resolution_clock::now();&#xD;
+			time6=std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count();&#xD;
+				&#xD;
+			// Coordinate admin staff - 7th operation&#xD;
+			const int numAdmins = Num_Elements;&#xD;
+			std::string adminRolesNew=&quot;Admin&quot;;&#xD;
+				&#xD;
+			start = std::chrono::high_resolution_clock::now();&#xD;
+			&#xD;
+			for (int i = 0; i &lt; numAdmins; i++) &#xD;
+			{&#xD;
+					// Start time to find the admin	&#xD;
+				std::shared_ptr&lt;Staff> admin = nullptr;&#xD;
+				std::shared_ptr&lt;Bag&lt;Staff>> staffs = clinic->getStaffs();&#xD;
+				std::string adminNamesNew = &quot;Admin_&quot; + std::to_string(i + 1);&#xD;
+				std::string adminNewDepartmentsNew= (i % 2 == 0) ? &quot;Finance&quot; : &quot;HR&quot;; // Alternate departments&#xD;
+				std::string newAdminAddressesNew=&quot;New Admin Address &quot; + std::to_string(i + 1);&#xD;
+					&#xD;
+							&#xD;
+				// Find the admin by name, role, and department&#xD;
+				Bag&lt;Staff>::const_iterator endit=staffs->end();&#xD;
+				for (Bag&lt;Staff>::const_iterator it = staffs->begin(); it != endit; it++) &#xD;
+				{&#xD;
+					std::string itName = (*it)->getName();&#xD;
+					std::string itRole = (*it)->getRole();&#xD;
+					std::string itDepartment = (*it)->getDepartment();&#xD;
+					std::string adminRolesNew = &quot;Admin&quot;; // All roles are Admin		&#xD;
+					std::string newAdminAddressesNew= &quot;New Admin Address &quot; + std::to_string(i + 1);				&#xD;
+					if (itName == adminNamesNew &amp;&amp; itRole == adminRolesNew &amp;&amp; itDepartment == adminNewDepartmentsNew) &#xD;
+					{&#xD;
+								admin = (*it);&#xD;
+								break; // Exit loop once the admin is found&#xD;
+					}&#xD;
+				}&#xD;
+				if (admin != nullptr) &#xD;
+				{&#xD;
+					// Change the workplace for the found admin&#xD;
+					clinic->coordinateAdmin(admin, newAdminAddressesNew, adminNewDepartmentsNew);&#xD;
+				} &#xD;
+			}&#xD;
+			end= std::chrono::high_resolution_clock::now();// creation time finishes&#xD;
+			time7=std::chrono::duration_cast&lt;std::chrono::microseconds>(end - start).count();					&#xD;
+			startTimedeletion= std::chrono::high_resolution_clock::now();&#xD;
+		}		&#xD;
+		endDeletion= std::chrono::high_resolution_clock::now();&#xD;
+		deletionTime= std::chrono::duration_cast&lt;std::chrono::microseconds>(endDeletion - startTimedeletion).count();&#xD;
+		&#xD;
+		finalend=std::chrono::high_resolution_clock::now();&#xD;
+		&#xD;
+		csvFile &lt;&lt; runNumber &lt;&lt; &quot;,&quot; &lt;&lt; Num_Elements &lt;&lt; &quot;,&quot;&lt;&lt;time1&lt;&lt;&quot;,&quot;&lt;&lt;time2&lt;&lt;&quot;,&quot;&lt;&lt;time3&lt;&lt;&quot;,&quot;&lt;&lt;time4&lt;&lt;&quot;,&quot;&lt;&lt;time5&lt;&lt;&quot;,&quot;&lt;&lt;time6&lt;&lt;&quot;,&quot;&lt;&lt;time7&lt;&lt;&quot;,&quot;&lt;&lt;deletionTime&lt;&lt;std::endl;&#xD;
+		std::cout &lt;&lt; &quot;Operation Times: &quot; &lt;&lt; time1 &lt;&lt; &quot;, &quot; &lt;&lt; time2 &lt;&lt; &quot;, &quot; &lt;&lt; time3 &lt;&lt; &quot;, &quot;  &lt;&lt; time4 &lt;&lt; &quot;, &quot; &lt;&lt; time5 &lt;&lt; &quot;, &quot; &lt;&lt; time6 &lt;&lt; &quot;, &quot; &lt;&lt; time7 &lt;&lt; std::endl;&#xD;
+		std::cout&lt;&lt;&quot;Deletion Time: &quot;&lt;&lt;deletionTime&lt;&lt;std::endl;&#xD;
+	}&#xD;
+}&#xD;
+//std::cout &lt;&lt;&quot;creation time:&quot;&lt;&lt;(std::chrono::duration_cast&lt;std::chrono::microseconds>(end-start).count())&lt;&lt;&quot;ms&quot;&lt;&lt;std::endl;&#xD;
+//std::cout &lt;&lt;&quot;final creation time:&quot;&lt;&lt;(std::chrono::duration_cast&lt;std::chrono::microseconds>(finalend-start).count())&lt;&lt;&quot;ms&quot;&lt;&lt;std::endl;&#xD;
+//std::cout &lt;&lt;&quot;deletion time: &quot;&lt;&lt;(std::chrono::duration_cast&lt;std::chrono::microseconds>(endDeletion-startTimedeletion).count())&lt;&lt;&quot;ms&quot;&lt;&lt;std::endl;	&#xD;
+std::cout &lt;&lt; &quot;End of Program..&quot; &lt;&lt; std::endl;&#xD;
+csvFile.close();&#xD;
+&#xD;
+</body>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_hHmaYN9ZEe-AEN9jxhy8Pg" memberEnd="_hHmaY99ZEe-AEN9jxhy8Pg _hHqEwN9ZEe-AEN9jxhy8Pg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_hHmaYd9ZEe-AEN9jxhy8Pg" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_hHmaYt9ZEe-AEN9jxhy8Pg" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_hHmaY99ZEe-AEN9jxhy8Pg" name="clinics" type="_ftEQgN8hEe-AEN9jxhy8Pg" association="_hHmaYN9ZEe-AEN9jxhy8Pg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_fS-TsN9cEe-AEN9jxhy8Pg" memberEnd="_fS_h0t9cEe-AEN9jxhy8Pg _fS_h1d9cEe-AEN9jxhy8Pg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_fS_h0N9cEe-AEN9jxhy8Pg" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_fS_h0d9cEe-AEN9jxhy8Pg" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_fS_h1d9cEe-AEN9jxhy8Pg" name="administrationfacility" type="_Zuzn4N9ZEe-AEN9jxhy8Pg" association="_fS-TsN9cEe-AEN9jxhy8Pg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jBLq0N9cEe-AEN9jxhy8Pg"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_je7b4POWEe-KD90n1g5WrQ" memberEnd="_jfk8IPOWEe-KD90n1g5WrQ _jfmKQPOWEe-KD90n1g5WrQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jfkVEPOWEe-KD90n1g5WrQ" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jfkVEfOWEe-KD90n1g5WrQ" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_jfk8IPOWEe-KD90n1g5WrQ" name="clinics" type="_ftEQgN8hEe-AEN9jxhy8Pg" association="_je7b4POWEe-KD90n1g5WrQ"/>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_e9WzYN84Ee-AEN9jxhy8Pg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_e9cS8N84Ee-AEN9jxhy8Pg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="../../../src/common/UML4CPPProfile/model/UML4CPPProfile.uml#_v75nIfp7EeuavpF89IQaUg"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="../../../src/common/UML4CPPProfile/model/UML4CPPProfile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <UML4CPPProfile:MainBehavior xmi:id="_tAFuUN84Ee-AEN9jxhy8Pg" base_Behavior="_jizUgN84Ee-AEN9jxhy8Pg"/>
+</xmi:XMI>
