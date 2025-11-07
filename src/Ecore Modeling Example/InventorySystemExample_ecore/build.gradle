@@ -1,0 +1,45 @@
+plugins {
+    id "tui.sse.mde4cpp.MDE4CPPCompile" version "0.6"
+}
+
+//defines name of gradle task
+task compileInventorySystemExample_ecore(type: tui.sse.mde4cpp.MDE4CPPCompile) {
+    // defines name of task group
+    group 'InventorySystemExample_ecore'
+    
+    // defines task description that will be printed when 'gradlew tasks' is executed
+    description 'compiles InventorySystemExample_ecore'
+    
+    //defines directory of source files inside the project folder
+    projectFolder = file('.' + File.separator + 'src' + File.separator)
+    
+    inputs.files(fileTree('.') {
+        exclude 'src/.cmake/**'
+    })
+    if (!file('.' + File.separator + 'src' + File.separator + '.cmake' + File.separator).exists()) {
+        outputs.upToDateWhen { false }
+    }
+    // defines directory and file name for compiled executable
+    outputs.file file(System.getenv('MDE4CPP_HOME') + File.separator + 'application' + File.separator + 'bin' + File.separator + 'App_InventorySystemExample_ecore.exe')
+    outputs.file file(System.getenv('MDE4CPP_HOME') + File.separator + 'application' + File.separator + 'bin' + File.separator + 'App_InventorySystemExample_ecored.exe')
+    
+    // dependency to model 'ecore'
+    def ecore = getRootProject().getTasksByName('buildEcore', true)
+    dependsOn ecore
+    inputs.files(ecore.outputs)
+
+    // dependency to model 'types'
+    def types = getRootProject().getTasksByName('buildTypes', true)
+    dependsOn types
+    inputs.files(types.outputs)
+}
+
+task clean {
+    doLast {
+        def cmakeFolder = file('.' + File.separator + 'src' + File.separator + '.cmake')
+        if (cmakeFolder.exists()) {
+            delete cmakeFolder.absolutePath
+            println "deleting folder " + cmakeFolder.absolutePath
+        }
+    }
+}
