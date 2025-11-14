@@ -1,63 +1,42 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-#the first file
+# reading csv files 
 df_creation = pd.read_csv('EcoreCreation_times.csv')
-#mean and stddev for Creation Time
-results1 = df_creation.groupby('RUN')['Creation_Time_ms'].agg(['mean', 'std'])
-
-#the 2nd file
 df_deletion = pd.read_csv('EcoreDeletion_times.csv')
-#mean and stddev for deletion Time
-results2 = df_deletion.groupby('RUN')['Deletion_Time_ms'].agg(['mean', 'std'])
 
-df_uml= pd.read_csv('ClinicModel_times.csv');
-result1= df_uml.groupby('Num_Elements')['Time1'].agg(['mean'])
-result2= df_uml.groupby('Num_Elements')['Time2'].agg(['mean'])
-result3= df_uml.groupby('Num_Elements')['Time3'].agg(['mean'])
-result4= df_uml.groupby('Num_Elements')['Time4'].agg(['mean'])
-result5= df_uml.groupby('Num_Elements')['Time5'].agg(['mean'])
-# NUM_Object values in x-axis 
+# Mean and stdDev for Creation and Deletion Time
+results1 = df_creation.groupby('RUN')['Creation_Time_ms'].agg(['mean', 'std']).sort_index()
+results2 = df_deletion.groupby('RUN')['Deletion_Time_ms'].agg(['mean', 'std']).sort_index()
 
-num_objects = df_creation.groupby('RUN')['NUM_Object'].first().values
-
-num_objects2 = df_uml.groupby('RUN')['Num_Elements'].first().values
+# Extract NUM_Object values in correct order
+num_objects = df_creation.groupby('RUN')['NUM_Object'].first().sort_index().values
 
 plt.figure(figsize=(10, 6))
+
+color_creation = '#003399'
+color_deletion = '#ff5050' 
 
 # Plotting Creation Time
-plt.errorbar(num_objects, results1['mean'], yerr=results1['std'], fmt='o-', capsize=5, label='Creation Time', color='blue')
+plt.errorbar( num_objects, results1['mean'], yerr=results1['std'], fmt='o-', capsize=8, capthick=2, elinewidth=2, markersize=9, label='Creation Time', color=color_creation, alpha=0.8)
 
 # Plotting Deletion Time
-#plt.errorbar(num_objects, results2['mean'], yerr=results2['std'], fmt='o-', capsize=5, label='Deletion Time', color='red')
+plt.errorbar( num_objects, results2['mean'], yerr=results2['std'], fmt='o-', capsize=8, capthick=2, elinewidth=2, markersize=9, label='Deletion Time', color=color_deletion, alpha=0.8)
 
-plt.xlabel('(NUM_Object)')
-plt.ylabel('Time (Mean and StdDev)')
-plt.title('Mean Creation and Deletion Time with StdDev')
-plt.xticks(num_objects)
-plt.grid(True)
-plt.legend()
-plt.show()
+# Labels and Titles
+plt.xlabel('Model Elements', fontsize=12)
+plt.ylabel('Time (microseconds)', fontsize=12)
+plt.title('Performance Metrics of Execution Time with Ecore Meta-Model', fontsize=14)
 
-print (num_objects2)
-print (result1)
+plt.xticks(num_objects, rotation=30, fontsize=10)
+plt.yticks(fontsize=10)
+plt.grid(True, linestyle='--', alpha=0.5)
 
+# legend and layout adjustment
+plt.legend(fontsize=12)
+plt.tight_layout()
 
-plt.figure(figsize=(10, 6))
-plt.plot(num_objects2, result1['mean'], color='blue')
-plt.plot(num_objects2, result2['mean'], color='red')
-plt.plot(num_objects2, result3['mean'], color='green')
-plt.plot(num_objects2, result4['mean'], color='black')
-#plt.plot(num_objects2, result5['mean'], color='yellow')
+plt.savefig('Ecore_Performance_Metrics.png', dpi=300, bbox_inches='tight')
 
-
-#plt.plot(num_objects2, result1['mean'], fmt='o-', capsize=5, label='Creation Time', color='blue')
-#plt.plot(num_objects2, result2['mean'], fmt='o-', capsize=5, label='Creation Time', color='green')
-#plt.plot(num_objects2, result3['mean'], fmt='o-', capsize=5, label='Creation Time', color='red')
-#plt.plot(num_objects2, result4['mean'], fmt='o-', capsize=5, label='Creation Time', color='black')
-#plt.plot(num_objects2, result5['mean'], fmt='x:', capsize=5, label='Creation Time', color='yellow')
-
-
-plt.xlabel('(NUM_Object)')
-plt.ylabel('Time (Mean and StdDev)')
+# Show plot
 plt.show()
