@@ -1,6 +1,6 @@
 # MDE4CPP Profiling & Benchmarking Examples
 
-This repository contains the **modeling examples and benchmarking experiments** developed for the research project *"A Comprehensive Analysis of Profiling Strategies and Performance Benchmarking with MDE4CPP"* (TU Ilmenau, 2025).
+This repository contains the **modeling examples and benchmarking experiments** developed for the research project *"A Comprehensive Analysis of Profiling Strategies and Performance Benchmarking with MDE4CPP"* (TU Ilmenau, 2025). https://github.com/MDE4CPP/MDE4CPP
 
 ## Purpose
 The repo demonstrates:
